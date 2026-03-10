@@ -30,4 +30,18 @@ CREATE TABLE Endereco(
 	CONSTRAINT PK_IdEndereco PRIMARY KEY (Id),
 	CONSTRAINT FK_IdPais_Endereco FOREIGN KEY (IdPais) REFERENCES Pais (Id),
 	CONSTRAINT FK_IdUF_Endereco FOREIGN KEY (IdUF) REFERENCES UF (Id)
+); 
+
+CREATE TABLE Contato(
+	Id INT IDENTITY,
+	ContatoPrincipal VARCHAR (11) NOT NULL, 
+	TelefoneSecundario VARCHAR (11) NOT NULL
+
+	CONSTRAINT PK_IdContato PRIMARY KEY (Id)
+);
+
+CREATE TABLE Cliente(
+	Id INT IDENTITY,
+	IdEndereco INT NOT NULL,
+	IdContato 
 );
