@@ -43,5 +43,13 @@ CREATE TABLE Contato(
 CREATE TABLE Cliente(
 	Id INT IDENTITY,
 	IdEndereco INT NOT NULL,
-	IdContato 
+	IdContato INT NOT NULL,
+	CPF CHAR(11) UNIQUE NOT NULL,
+	Nome NVARCHAR(255) NOT NULL,
+	Email VARCHAR(255) NOT NULL,
+	DataNascimento DATE NOT NULL
+
+	CONSTRAINT PK_IdCliente PRIMARY KEY (Id),
+	CONSTRAINT FK_IdEndereco_Cliente FOREIGN KEY (IdEndereco) REFERENCES Endereco (Id),
+	CONSTRAINT FK_IdContato_Cliente FOREIGN KEY (IdContato) REFERENCES Contato (Id)
 );
