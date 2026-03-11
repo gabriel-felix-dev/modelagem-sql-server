@@ -53,3 +53,67 @@ CREATE TABLE Cliente(
 	CONSTRAINT FK_IdEndereco_Cliente FOREIGN KEY (IdEndereco) REFERENCES Endereco (Id),
 	CONSTRAINT FK_IdContato_Cliente FOREIGN KEY (IdContato) REFERENCES Contato (Id)
 );
+
+CREATE TABLE FormaDePagamento(
+	Id INT IDENTITY,
+	Nome NVARCHAR(255) NOT NULL
+
+	CONSTRAINT PK_IdFormaDePagamento PRIMARY KEY (Id)
+);
+
+CREATE TABLE Venda(
+	Id INT IDENTITY,
+	IdCliente INT NOT NULL,
+	IdFormaDePagamento INT NOT NULL,
+	Data DATE NOT NULL
+
+	CONSTRAINT PK_IdVenda PRIMARY KEY (Id),
+	CONSTRAINT FK_IdCliente_Venda FOREIGN KEY (IdCliente) REFERENCES Cliente (Id),
+	CONSTRAINT FK_IdFormaDePagamento_Venda FOREIGN KEY (IdFormaDePagamento) REFERENCES FormaDePagamento (Id)
+);
+
+CREATE TABLE Estilo(
+	Id INT IDENTITY,
+	Nome NVARCHAR(255) NOT NULL
+
+	CONSTRAINT PK_IdEstilo PRIMARY KEY (Id)
+);
+
+CREATE TABLE Fornecedor(
+	Id INT IDENTITY,
+	IdContato INT NOT NULL,
+	IdEndereco INT NOT NULL,
+	Nome NVARCHAR(255) NOT NULL,
+	CNPJ CHAR(14) UNIQUE NOT NULL,
+	Email VARCHAR(255) NOT NULL
+
+	CONSTRAINT PK_IdFornecedor PRIMARY KEY (Id),
+	CONSTRAINT FK_IdContato_Fornecedor FOREIGN KEY (IdContato) REFERENCES Contato (Id),
+	CONSTRAINT FK_IdEndereco_Fornecedor FOREIGN KEY (IdEndereco) REFERENCES Endereco (Id)
+);
+
+CREATE TABLE Produto(
+	Id INT IDENTITY,
+	IdEstilo INT NOT NULL,
+	IdFornecedor INT NOT NULL,
+	Nome NVARCHAR(255) NOT NULL,
+	QuantidadeEstoque INT NOT NULL,
+	PrecoUnitario DECIMAL(10,2) NOT NULL,
+	Tamanho CHAR(3) NOT NULL
+
+	CONSTRAINT PK_IdProduto PRIMARY KEY (Id),
+	CONSTRAINT FK_IdEstilo_Produto FOREIGN KEY (IdEstilo) REFERENCES Estilo (Id),
+	CONSTRAINT FK_IdFornecedor_Produto FOREIGN KEY (IdFornecedor) REFERENCES Fornecedor (Id)
+);
+
+CREATE TABLE VendaProduto(
+	Id INT IDENTITY,
+	IdVenda INT NOT NULL,
+	IdProduto INT NOT NULL,
+	Quantidade INT NOT NULL,
+	Valor DECIMAL(10,2) NOT NULL
+
+	CONSTRAINT PK_IdVendaProduto PRIMARY KEY (Id),
+	CONSTRAINT FK_IdVenda_VendaProduto FOREIGN KEY (IdVenda) REFERENCES Venda (Id),
+	CONSTRAINT FK_IdProduto_VendaProduto FOREIGN KEY (IdProduto) REFERENCES Produto (Id)
+); 
