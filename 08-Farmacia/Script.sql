@@ -1,0 +1,10 @@
+CREATE DATABASE Farmacia;
+
+USE Farmacia;
+
+CREATE TABLE Endereco(
+	Id INT IDENTITY,
+	CEP CHAR(8) NOT NULL,
+	Logradouro NVARCHAR(255) NOT NULL,
+	Numero VARCHAR(5)
+);

@@ -1,0 +1,5 @@
+SELECT * FROM Pais;
+
+SELECT * FROM Autor;
+
+SELECT * FROM Livro;
