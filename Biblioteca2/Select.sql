@@ -1,0 +1,7 @@
+SELECT * FROM Pais;
+
+SELECT * FROM Pais WHERE Id IN (1,2);
+
+SELECT * FROM Pais;
+
+SELECT * FROM Autor;
