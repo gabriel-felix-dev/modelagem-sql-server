@@ -725,3 +725,34 @@ SELECT	cl.Nome as 'Cliente',
 			ON cl.Id = ve.IdCliente
 	GROUP BY cl.Nome
 	ORDER BY 2 DESC;
+
+-- Questão 81
+
+SELECT	me.Nome as 'Medicamento',
+		fa.Nome as 'Fabricante'
+	FROM Medicamento AS me
+		INNER JOIN Fabricante AS fa
+			ON me.IdFabricante = fa.Id
+	WHERE me.IdFabricante IN (SELECT	fa.Id
+								  FROM Fabricante AS fa
+								  WHERE fa.Nome LIKE 'A%');
+
+-- Questão 82
+
+SELECT	cl.Nome as 'Cliente',
+		cl.Cpf  as 'CPF',
+		me.Nome as 'Produto',
+		me.RequerReceita as 'Precisa de Receita',
+		ve.ValorTotal as 'Valor Total',
+		ve.DataHora as 'Data e Hora',
+		ve.StatusVenda as 'Status'
+	FROM Cliente AS cl
+		INNER JOIN Venda AS ve
+			ON cl.Id = ve.IdCliente
+		INNER JOIN VendaMedicamento AS veme
+			ON ve.Id = veme.IdVenda
+		INNER JOIN Medicamento AS me
+			ON me.Id = veme.IdMedicamento
+	WHERE NOT EXISTS(SELECT	1
+						FROM Medicamento AS me
+						WHERE me.RequerReceita = 1);
