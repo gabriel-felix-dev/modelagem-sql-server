@@ -659,3 +659,69 @@ SELECT	DISTINCT me.Nome as 'Medicamento',
 	WHERE me.RequerReceita = 1 AND
 		veme.NumeroReceita IS NOT NULL
 	ORDER BY 1 ASC;
+
+-- Questão 76
+
+SELECT	me.Nome as 'Medicamento',
+		me.Preco as 'Valores acima da média'
+	FROM Medicamento AS me,
+	(SELECT	AVG(md.Preco) as 'Preco Médio'
+		FROM Medicamento AS md) as Subconsulta
+	WHERE me.Preco > Subconsulta.[Preco Médio];
+
+-- Questão 77
+
+SELECT	cl.Nome as 'Cliente',
+		cl.Cpf as 'CPF',
+		(SELECT	MAX(ve.ValorTotal) as 'Valor Máximo'
+			FROM Venda AS ve
+			WHERE ve.IdCliente = cl.Id) as 'Maior Valor'
+	FROM Cliente AS cl
+	ORDER BY [Maior Valor] DESC;
+
+-- Questão 78
+
+SELECT	me.Nome as 'Medicamento',
+		me.Preco as 'Preço Unitário',
+		CASE
+			WHEN me.Preco > 100.00 THEN 'Especial'
+			WHEN me.Preco >= 40.00 THEN 'Moderado'
+			ELSE 'Popular'
+		END as 'Classificação'
+	FROM Medicamento AS me
+	ORDER BY 3 ASC;
+
+-- Questão 79
+
+SELECT	entr.Nome as 'Entregador',
+		(SELECT	COUNT(CASE
+						  WHEN entg.StatusPrazo = 'Atrasado' THEN 1
+					  END) as 'Quantidade de Atraso'
+			FROM Entrega AS entg
+			WHERE entg.IdEntregador = entr.Id) as 'Quantidade de entregas atrasadas'
+	FROM Entregador AS entr
+	ORDER BY 2 DESC;
+
+SELECT	entr.Nome as 'Entregador',
+		(SELECT	COUNT(CASE
+						  WHEN DATEDIFF(MINUTE, PrevisaoChegada, DataHoraEntrega)/60.0 > 0 THEN 1
+					  END) as 'Quantidade de Atraso'
+			FROM Entrega AS entg
+			WHERE entg.IdEntregador = entr.Id) as 'Quantidade de entregas atrasadas'
+	FROM Entregador AS entr
+	ORDER BY 2 DESC;
+
+-- Questão 80
+
+SELECT	cl.Nome as 'Cliente',
+		COUNT(ve.id) as 'Quantidade de compras',
+		CASE
+			WHEN COUNT(ve.id) > 5 THEN 'VIP'
+			WHEN COUNT(ve.id) >= 2 THEN 'Fiel'
+			ELSE 'Novo'
+		END as 'Tier'
+	FROM Cliente AS cl
+		INNER JOIN Venda AS ve
+			ON cl.Id = ve.IdCliente
+	GROUP BY cl.Nome
+	ORDER BY 2 DESC;
